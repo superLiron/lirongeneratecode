@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liron.lirongeneratecode.mapper.ColumnsMapper">
+    <resultMap type="com.liron.lirongeneratecode.dao.Columns" id="columnsResultMap">
+        <result property="columnName" column="column_name"/>
+        <result property="dataType" column="data_type"/>
+        <result property="columnComment" column="column_comment"/>
+        <result property="columnKey" column="column_key"/>
+        <result property="extra" column="extra"/>
+    </resultMap>
+    <sql id="select">
+        <![CDATA[
+			SELECT
+					column_name,
+					data_type,
+					column_comment,
+					column_key,
+					extra
+		]]>
+    </sql>
+
+    <sql id="count">
+        <![CDATA[
+	    	SELECT COUNT(1)
+	  	]]>
+    </sql>
+
+    <select id="selectByTableName" resultMap="columnsResultMap">
+        <include refid="select"/>
+         from information_schema.columns
+ 			where table_name = #{tableName} and table_schema = (select database()) order by ordinal_position
+	</select>
+</mapper>
